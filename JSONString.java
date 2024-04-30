@@ -33,14 +33,21 @@ public class JSONString implements JSONValue {
    * Convert to a string (e.g., for printing).
    */
   public String toString() {
-    return "";          // STUB
-  } // toString()
+    return "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+}
 
   /**
    * Compare to another object.
    */
   public boolean equals(Object other) {
-    return true;        // STUB
+    if (this == other) {
+      return true;
+    } else if (other instanceof JSONString) {
+      JSONString that = (JSONString) other;
+      return this.value.equals(that.value);
+    } else {
+      return false;
+    } // if (
   } // equals(Object)
 
   /**
@@ -58,7 +65,9 @@ public class JSONString implements JSONValue {
    * Write the value as JSON.
    */
   public void writeJSON(PrintWriter pen) {
-                        // STUB
+    pen.print("\"");
+    pen.print(value.replace("\\", "\\\\").replace("\"", "\\\""));
+    pen.print("\"");
   } // writeJSON(PrintWriter)
 
   /**

@@ -55,8 +55,16 @@ public class JSONInteger implements JSONValue {
    * Compare to another object.
    */
   public boolean equals(Object other) {
-    return true;        // STUB
+    if (this == other) {
+      return true;
+    } else if (other instanceof JSONInteger) {
+      JSONInteger that = (JSONInteger) other;
+      return this.value.equals(that.value);
+    } else {
+      return false;
+    }
   } // equals(Object)
+
 
   /**
    * Compute the hash code.
@@ -73,7 +81,7 @@ public class JSONInteger implements JSONValue {
    * Write the value as JSON.
    */
   public void writeJSON(PrintWriter pen) {
-                        // STUB
+    pen.print(this.value);
   } // writeJSON(PrintWriter)
 
   /**

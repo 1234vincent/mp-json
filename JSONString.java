@@ -54,7 +54,7 @@ public class JSONString implements JSONValue {
    * Compute the hash code.
    */
   public int hashCode() {
-    return 0;           // STUB
+    return this.value.hashCode(); // STUB
   } // hashCode()
 
   // +--------------------+------------------------------------------

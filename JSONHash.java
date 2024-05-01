@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * JSON hashes/objects.
  */
-public class JSONHash implements JSONValue {
+public class JSONHash implements JSONValue, Iterable<KVPair<JSONString, JSONValue>> {
 
     // +--------+------------------------------------------------------
     // | Fields |
@@ -34,6 +34,7 @@ public class JSONHash implements JSONValue {
     /**
      * Convert to a string (e.g., for printing).
      */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("{");
         Iterator<KVPair<JSONString, JSONValue>> it = this.iterator();
@@ -46,11 +47,12 @@ public class JSONHash implements JSONValue {
         }
         sb.append("}");
         return sb.toString();
-    } // toString()
+    }
 
     /**
      * Compare to another object.
      */
+    @Override
     public boolean equals(Object other) {
         if (!(other instanceof JSONHash)) return false;
         JSONHash that = (JSONHash) other;
@@ -64,18 +66,19 @@ public class JSONHash implements JSONValue {
             }
         }
         return true;
-    } // equals(Object)
+    }
 
     /**
      * Compute the hash code.
      */
+    @Override
     public int hashCode() {
         int hash = 0;
         for (KVPair<JSONString, JSONValue> pair : this) {
             hash += pair.hashCode();
         }
         return hash;
-    } // hashCode()
+    }
 
     // +--------------------+------------------------------------------
     // | Additional methods |
@@ -84,16 +87,18 @@ public class JSONHash implements JSONValue {
     /**
      * Write the value as JSON.
      */
+    @Override
     public void writeJSON(PrintWriter pen) {
         pen.print(this.toString());
-    } // writeJSON(PrintWriter)
+    }
 
     /**
      * Get the underlying value.
      */
+    @Override
     public Iterator<KVPair<JSONString, JSONValue>> getValue() {
         return this.iterator();
-    } // getValue()
+    }
 
     // +-------------------+-------------------------------------------
     // | Hashtable methods |
@@ -110,42 +115,41 @@ public class JSONHash implements JSONValue {
             }
         }
         return null;
-    } // get(JSONString)
+    }
 
     /**
      * Set the value associated with a key, replacing the existing KVPair if the key exists.
      */
     public void set(JSONString key, JSONValue value) {
         int index = hash(key);
-        // Iterate over the bucket to find an existing key
         for (int i = 0; i < table[index].size(); i++) {
             if (table[index].get(i).key().equals(key)) {
                 table[index].set(i, new KVPair<>(key, value));  // Replace with new KVPair
                 return;
             }
         }
-        // Key not found, add new KVPair
         table[index].add(new KVPair<>(key, value));
         size++;
-    } // set(JSONString, JSONValue)
+    }
 
     /**
      * Get all of the key/value pairs.
      */
+    @Override
     public Iterator<KVPair<JSONString, JSONValue>> iterator() {
         ArrayList<KVPair<JSONString, JSONValue>> result = new ArrayList<>();
         for (ArrayList<KVPair<JSONString, JSONValue>> bucket : table) {
             result.addAll(bucket);
         }
         return result.iterator();
-    } // iterator()
+    }
 
     /**
      * Find out how many key/value pairs are in the hash table.
      */
     public int size() {
         return size;
-    } // size()
+    }
 
     // +------------------+--------------------------------------------
     // | Helper methods |
@@ -156,6 +160,6 @@ public class JSONHash implements JSONValue {
      */
     private int hash(JSONString key) {
         return (key.hashCode() & 0x7fffffff) % table.length;
-    } // hash(JSONString)
+    }
 
 } // class JSONHash

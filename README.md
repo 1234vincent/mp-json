@@ -1,10 +1,17 @@
-Mini-Project 8: JSON
-====================
+## Submission
 
-A simple JSON parser.
+Assignment: Mini-Project 9: Bit trees and Braille 
 
-Implemented by NAME and NAME for CSC-207-01 2023Fa.
+Author(s): Rommin Adl, Vincent, Nye Tenerelli
 
-Acknowledgements:
+Class: CSC-207
 
-* Skeleton code by SamR
+
+## Resources
+
+Oracle to help with reader class in java.
+
+
+## Assignment description
+
+In this addignment a JSON library for Java is developed. JSON is “JavaScript Object Notation” and serves as a common format for passing information between programs. 

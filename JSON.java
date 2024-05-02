@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -55,6 +56,7 @@ public class JSON {
      * Parse JSON from a reader, keeping track of the current position.
      */
     static JSONValue parseKernel(Reader source) throws ParseException, IOException {
+
         int ch = skipWhitespace(source);
         if (ch == -1) {
             throw new ParseException("Unexpected end of file", pos);
@@ -67,7 +69,9 @@ public class JSON {
             case 't': case 'f': return parseBoolean(source);
             case 'n': return parseNull(source);
             default:
+            System.out.println(ch);
                 if (Character.isDigit(ch) || ch == '-') {
+                    System.out.println(ch);
                     return parseNumber(source, ch);
                 }
                 throw new ParseException("Unexpected character", pos);
@@ -101,11 +105,12 @@ public class JSON {
     static JSONValue parseArray(Reader source) throws IOException, ParseException {
         JSONArray array = new JSONArray();
         int c;
-        boolean first = true;
+        // boolean first = true;
+        array.add(parseKernel(source));
         while ((c = skipWhitespace(source)) != ']') {
             if (c == -1) throw new ParseException("Unterminated array", pos);
-            if (!first && c == ',') c = skipWhitespace(source);
-            if (first) first = false;
+            // if (!first && c == ',') c = skipWhitespace(source);
+            // if (first) first = false;
             pos--;
             array.add(parseKernel(source));
         }
@@ -134,10 +139,11 @@ public class JSON {
         source.mark(4);  // To handle true/false
         char[] tf = new char[5];
         int n = source.read(tf, 0, 4);
-        if (n == 4) {
+
+        if (n == 4 || n == 3) {
             String str = new String(tf).trim();
-            if ("true".equals(str)) return JSONConstant.TRUE;
-            if ("false".equals(str) && (char) source.read() == 'e') return JSONConstant.FALSE;
+            if ("rue".equals(str)) return JSONConstant.TRUE;
+            if ("alse".equals(str)) return JSONConstant.FALSE;
         }
         throw new IOException("Invalid boolean value");
     }
@@ -146,7 +152,7 @@ public class JSON {
         source.mark(3);
         char[] nul = new char[4];
         int n = source.read(nul, 0, 4);
-        if (n == 4 && "null".equals(new String(nul).trim())) {
+        if (n == 4 && "ull".equals(new String(nul).trim())) {
             return JSONConstant.NULL;
         }
         throw new IOException("Invalid null value");

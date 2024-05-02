@@ -1,6 +1,6 @@
 ## Submission
 
-Assignment: Mini-Project 9: Bit trees and Braille 
+Assignment: Mini-Project 10: Parsing and producing JSON  
 
 Author(s): Rommin Adl, Vincent, Nye Tenerelli
 

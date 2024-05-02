@@ -69,9 +69,7 @@ public class JSON {
             case 't': case 'f': return parseBoolean(source);
             case 'n': return parseNull(source);
             default:
-            System.out.println(ch);
                 if (Character.isDigit(ch) || ch == '-') {
-                    System.out.println(ch);
                     return parseNumber(source, ch);
                 }
                 throw new ParseException("Unexpected character", pos);
